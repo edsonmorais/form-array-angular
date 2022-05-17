@@ -1,0 +1,56 @@
+<div class="container p-2">
+
+    <form [formGroup]="form" (submit)="gravar()">
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="nome" name="nome" formControlName="nome" placeholder="Nome">
+            <label for="nome">Nome</label>
+        </div>
+        <div class="form-floating">
+            <input type="date" class="form-control" id="dataNascimento" name="dataNascimento"
+                placeholder="dd/mm/aaaa" formControlName="dataNascimento">
+            <label for="dataNascimento">Data Nascimento</label>
+        </div>
+
+        <div style="border: 1px solid lightgray;border-radius: 5px;" class="mt-4 p-3">
+
+            <div class="row">
+                <div class="col text-left">
+                    <h6>Adicionar Contato
+                    <button type="button" class="btn btn-outline-primary" (click)="adicionarContato()">+</button>
+                </h6>
+                </div>
+                
+            </div>
+
+            <ng-container formArrayName="contatos">
+                <ng-container *ngFor="let contatoForm of contatos.controls;let i = index;">
+                    <div class="row m-2" [formGroup]="contatoForm">
+                    <div class="col-md-3 col-xs-12">
+                        <select class="form-control" formControlName="tipoContato" name="tipoContato" (change)="tipoMascara = contatoForm.get('tipoContato').value">
+                                <option value="">Selecione o tipo</option>
+                                <option [value]="tipoContato.valor" *ngFor="let tipoContato of tiposContato">{{
+                                    tipoContato.nome }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8 col-xs-12">
+                            <input type="text" *ngIf="contatoForm.get('tipoContato').value !== '4'" class="form-control" formControlName="valorContato" name="valorContato" mask="(00) 00000-0000">
+                            <input type="text" *ngIf="contatoForm.get('tipoContato').value === '4'" class="form-control" formControlName="valorContato" name="valorContato">
+                        </div>
+                        <div class="col-md-1 col-xs-12">
+                            <button class="btn btn-outline-danger" (click)="removerContato(i)">Remover</button>
+                        </div>
+                    </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+
+
+
+        <button type="submit" class="btn btn-primary mt-3">Gravar</button>
+
+    </form>
+
+
+
+</div>
